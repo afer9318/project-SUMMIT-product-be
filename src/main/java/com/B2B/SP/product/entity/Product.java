@@ -36,9 +36,14 @@ public class Product {
     @Column(name = "is_available")
     private Boolean isAvailable;
 
+    @Column(name = "is_active")
+    private Boolean isActive = Boolean.TRUE;
+
 
     // constructors
-    public Product(){}
+    public Product(){
+
+    }
 
     public Product(String productName, Long categoryId, Long brandId, Long supplierId, Long stockId, Long productPrice, String productImage, Boolean isAvailable, Boolean isActive) {
         this.productName = productName;
@@ -49,6 +54,7 @@ public class Product {
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.isAvailable = isAvailable;
+        this.isActive = isActive;
     }
 
     // getters/setters
@@ -124,9 +130,16 @@ public class Product {
         isAvailable = available;
     }
 
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
 
     // toString
-
     @Override
     public String toString() {
         return "Product{" +
@@ -139,6 +152,8 @@ public class Product {
                 ", productPrice=" + productPrice +
                 ", productImage='" + productImage + '\'' +
                 ", isAvailable=" + isAvailable +
+                ", isActive=" + isActive +
                 '}';
     }
+
 }
