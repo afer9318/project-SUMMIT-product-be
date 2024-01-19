@@ -14,4 +14,6 @@ public interface ProductService {
     Product update(Product theProduct);
 
     void deleteById(Long productId);
+
+//    Boolean softDeleteById(Long productId);
 }
