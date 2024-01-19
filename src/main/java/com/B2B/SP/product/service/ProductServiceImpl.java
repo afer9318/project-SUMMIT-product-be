@@ -2,6 +2,9 @@ package com.B2B.SP.product.service;
 
 import com.B2B.SP.product.dao.ProductRepository;
 import com.B2B.SP.product.entity.Product;
+import jakarta.persistence.EntityManager;
+import org.hibernate.Filter;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +15,27 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepository theProductRepository){
+    private final EntityManager entityManager;
+
+    public ProductServiceImpl(ProductRepository theProductRepository, EntityManager theEntityManager){
         this.productRepository = theProductRepository;
+        this.entityManager = theEntityManager;
     }
 
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+        // Enable the Hibernate filter
+        Session session = entityManager.unwrap(Session.class);
+        Filter filter = session.enableFilter("activeProductFilter");
+        filter.setParameter("isProductActive", true);
+
+        // Retrieve the list of products
+        List<Product> productList = productRepository.findAll();
+
+        // Disable the filter to avoid unwanted filtering in subsequent operations
+        session.disableFilter("activeProductFilter");
+
+        return productList;
     }
 
     @Override
@@ -51,19 +68,4 @@ public class ProductServiceImpl implements ProductService{
     public void deleteById(Long productId) {
         productRepository.deleteById(productId);
     }
-
-//    @Override
-//    public Boolean softDeleteById(Long productId) {
-//
-//        Optional<Product> optionalProduct = productRepository.findById(productId);
-//
-//        if (optionalProduct.isPresent()){
-//            Product existingProduct = optionalProduct.get();
-//            existingProduct.setActive(Boolean.FALSE);
-//            productRepository.save(existingProduct);
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
 }

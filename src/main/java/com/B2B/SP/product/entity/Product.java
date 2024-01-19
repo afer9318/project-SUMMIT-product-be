@@ -1,13 +1,14 @@
 package com.B2B.SP.product.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.*;
 
 @Entity
 @Table(name = "product")
 @SQLDelete(sql = "UPDATE product SET is_active = false WHERE product_id=?")
-@Where(clause = "is_active = true")
+@FilterDef(name = "activeProductFilter", parameters = @ParamDef(name = "isProductActive", type = Boolean.class))
+@Filter(name = "activeProductFilter", condition = "is_active = :isProductActive")
 public class Product {
 
     // fields
