@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public List<Product> findAll() {
         // Enable the Hibernate filter
         Session session = entityManager.unwrap(Session.class);
@@ -39,6 +41,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public Product findById(Long productId) {
         Optional<Product> result = productRepository.findById(productId);
 
@@ -55,16 +58,19 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public Product save(Product theProduct) {
         return productRepository.save(theProduct);
     }
 
     @Override
+    @Transactional
     public Product update(Product theProduct) {
         return productRepository.save(theProduct);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long productId) {
         productRepository.deleteById(productId);
     }
