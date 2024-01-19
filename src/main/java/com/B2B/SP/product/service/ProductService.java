@@ -15,5 +15,5 @@ public interface ProductService {
 
     void deleteById(Long productId);
 
-    Boolean softDeleteById(Long productId);
+//    Boolean softDeleteById(Long productId);
 }

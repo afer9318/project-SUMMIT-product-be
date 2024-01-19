@@ -1,9 +1,13 @@
 package com.B2B.SP.product.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "product")
+@SQLDelete(sql = "UPDATE product SET is_active = false WHERE product_id=?")
+@Where(clause = "is_active = true")
 public class Product {
 
     // fields
