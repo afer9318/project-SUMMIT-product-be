@@ -37,8 +37,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{productId}")
-    public void deleteProduct(@PathVariable Long productId){
-        productService.deleteById(productId);
+    public Boolean deleteProduct(@PathVariable Long productId){
+        return productService.softDeleteById(productId);
     }
 
 
