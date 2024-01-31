@@ -2,6 +2,7 @@ package com.B2B.SP.product.service;
 
 import com.B2B.SP.product.dao.ProductRepository;
 import com.B2B.SP.product.entity.Product;
+import com.B2B.SP.product.exception.ProductNotFoundException;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Filter;
 import org.hibernate.Session;
@@ -43,18 +44,8 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public Product findById(Long productId) {
-        Optional<Product> result = productRepository.findById(productId);
-
-        Product theProduct = null;
-
-        if (result.isPresent()){
-            theProduct = result.get();
-        }
-        else {
-            throw new RuntimeException("Did not find product id: " + productId);
-        }
-
-        return theProduct;
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
     }
 
     @Override
