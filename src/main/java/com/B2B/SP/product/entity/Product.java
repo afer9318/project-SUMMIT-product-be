@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "product")
 @SQLDelete(sql = "UPDATE product SET is_active = false WHERE product_id=?")
@@ -39,7 +41,7 @@ public class Product {
     private Long stockId;
 
     @Column(name = "product_price")
-    private Long productPrice;
+    private BigDecimal productPrice;
 
     @Column(name = "product_image")
     private String productImage;
