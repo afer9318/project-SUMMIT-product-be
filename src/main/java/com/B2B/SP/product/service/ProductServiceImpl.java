@@ -23,13 +23,10 @@ public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepository;
 
-    private  final ProductMapper productMapper;
-
     private final EntityManager entityManager;
 
-    public ProductServiceImpl(ProductRepository theProductRepository, ProductMapper productMapper, EntityManager theEntityManager){
+    public ProductServiceImpl(ProductRepository theProductRepository, EntityManager theEntityManager){
         this.productRepository = theProductRepository;
-        this.productMapper = productMapper;
         this.entityManager = theEntityManager;
     }
 
@@ -50,28 +47,6 @@ public class ProductServiceImpl implements ProductService{
         return productList;
     }
 
-//    @Override
-//    @Transactional
-//    public Product findById(Long productId) {
-//        return productRepository.findById(productId)
-//                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
-//    }
-
-//    @Override
-//    @Transactional
-//    public ProductDto findById(Long productId) {
-//        Optional<Product> optionalProduct = productRepository.findById(productId);
-//
-//        if (optionalProduct.isPresent()){
-//            ProductDto productDto = productMapper.productToDTo(optionalProduct.get());
-//            System.out.println("ProductDTo: " + productDto.toString());
-//            return productDto;
-//        }
-//        else {
-//            throw new ProductNotFoundException("Product not found with id: " + productId);
-//        }
-//    }
-
     @Override
     @Transactional
     public ProductDto findById(Long productId) {
@@ -80,7 +55,7 @@ public class ProductServiceImpl implements ProductService{
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
-        ProductDto productDto = productMapper.productToDTo(product);
+        ProductDto productDto = ProductMapper.INSTANCE.productToDTo(product);
 
         logger.info("Product info: {}", productDto);
 
