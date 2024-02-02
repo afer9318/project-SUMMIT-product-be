@@ -1,6 +1,6 @@
-package com.B2B.SP.product.dao;
+package com.B2B.SP.product.repository;
 
-import com.B2B.SP.product.entity.Product;
+import com.B2B.SP.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
