@@ -55,6 +55,9 @@ public class ProductServiceImpl implements ProductService{
         }
     }
 
+    // Filter not working for findById()
+    // https://stackoverflow.com/questions/62513505/hibernate-filters-are-not-working-for-apis-returning-single-result
+    // https://stackoverflow.com/questions/45169783/hibernate-filter-is-not-applied-for-findone-crud-operation
     @Override
     @Transactional(readOnly = true)
     public ProductDto findById(Long productId) {
@@ -91,9 +94,14 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public ProductDto update(ProductDto productDto) {
-        Long productId = productDto.getProductId();
-
         try{
+            Long productId = productDto.getProductId();
+
+            if (!productDto.getIsActive()){
+                logger.error("Cannot update Product isActive as false");
+                throw new BadRequestException("Cannot update Product isActive as false");
+            }
+
             logger.info("Updating product: {}", productDto);
 
             Optional<Product> optionalProduct = productRepository.findByIdAndIsActive(productId);
