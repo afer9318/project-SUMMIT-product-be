@@ -6,6 +6,7 @@ import com.B2B.SP.product.mapper.ProductMapper;
 import com.B2B.SP.product.repository.ProductRepository;
 import com.B2B.SP.product.model.Product;
 import jakarta.persistence.EntityManager;
+import org.apache.coyote.BadRequestException;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -64,8 +65,10 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public Product save(Product theProduct) {
-        return productRepository.save(theProduct);
+    public ProductDto save(ProductDto productDto) {
+        Product product = ProductMapper.INSTANCE.dtoToProductSave(productDto);
+        Product savedProduct = productRepository.save(product);
+        return ProductMapper.INSTANCE.productToDTo(savedProduct);
     }
 
     @Override

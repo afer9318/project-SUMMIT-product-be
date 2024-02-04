@@ -2,6 +2,8 @@ package com.B2B.SP.product.service;
 
 import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.model.Product;
+import org.apache.coyote.BadRequestException;
+
 import java.util.List;
 
 public interface ProductService {
@@ -10,7 +12,8 @@ public interface ProductService {
 
     ProductDto findById(Long productId);
 
-    Product save(Product theProduct);
+//    Product save(Product theProduct);
+    ProductDto save(ProductDto productDto);
 
     Product update(Product theProduct);
 

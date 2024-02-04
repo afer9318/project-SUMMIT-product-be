@@ -27,9 +27,14 @@ public class ProductController {
         return productService.findById(productId);
     }
 
+//    @PostMapping("/")
+//    public Product saveProduct(@RequestBody Product product){
+//        return productService.save(product);
+//    }
+
     @PostMapping("/")
-    public Product saveProduct(@RequestBody Product product){
-        return productService.save(product);
+    public ProductDto saveProduct(@RequestBody ProductDto productDto){
+        return productService.save(productDto);
     }
 
     @PutMapping("/")

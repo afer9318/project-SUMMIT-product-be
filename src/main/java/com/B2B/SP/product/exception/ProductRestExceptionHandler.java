@@ -1,6 +1,7 @@
 package com.B2B.SP.product.exception;
 
 import com.B2B.SP.product.service.ProductServiceImpl;
+import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class ProductRestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<ProductErrorResponse> handleBadRequestException(Exception exception){
 
         // create a ProductErrorResponse

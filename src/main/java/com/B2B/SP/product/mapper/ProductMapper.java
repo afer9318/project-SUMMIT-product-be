@@ -3,6 +3,7 @@ package com.B2B.SP.product.mapper;
 import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.model.Product;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.UUID;
@@ -13,5 +14,9 @@ public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
     ProductDto productToDTo(Product product);
+
     Product dtoToProduct(ProductDto productDto);
+
+    @Mapping(target = "productId", ignore = true)
+    Product dtoToProductSave(ProductDto productDto);
 }
