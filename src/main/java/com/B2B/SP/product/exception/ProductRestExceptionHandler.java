@@ -61,7 +61,7 @@ public class ProductRestExceptionHandler {
         error.setMessage(exception.getMessage());
         error.setTimestamp(System.currentTimeMillis());
 
-        logger.error("BadRequestException. Status: {}. Message: {}. Timestamp: {}",
+        logger.error("ProductServiceException. Status: {}. Message: {}. Timestamp: {}",
                 error.getStatus(),
                 error.getMessage(),
                 error.getTimestamp());

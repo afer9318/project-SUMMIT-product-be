@@ -90,13 +90,47 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     @Transactional
-    public Product update(Product theProduct) {
-        return productRepository.save(theProduct);
+    public ProductDto update(ProductDto productDto) {
+        Long productId = productDto.getProductId();
+
+        try{
+            logger.info("Updating product: {}", productDto);
+
+            Optional<Product> optionalProduct = productRepository.findByIdAndIsActive(productId);
+
+            if (optionalProduct.isEmpty()){
+                logger.error("Cannot update deleted product");
+                throw new BadRequestException("Cannot update deleted product");
+            }
+
+            Product product = optionalProduct.get();
+            Product updatedProduct = ProductMapper.INSTANCE.dtoToProduct(productDto);
+            updatedProduct = productRepository.save(updatedProduct);
+            logger.info("Updated product: {}", updatedProduct);
+            return ProductMapper.INSTANCE.productToDTo(updatedProduct);
+        }catch (Exception e){
+            logger.error("Exception while updating product", e);
+            throw e;
+        }
     }
 
     @Override
     @Transactional
     public void deleteById(Long productId) {
-        productRepository.deleteById(productId);
+        try{
+            logger.info("Deleting product: {}", productId);
+
+            Optional<Product> optionalProduct = productRepository.findByIdAndIsActive(productId);
+
+            if (optionalProduct.isEmpty()){
+                logger.error("Product already deleted");
+                throw new ProductNotFoundException("Product already deleted");
+            }
+
+            productRepository.deleteById(productId);
+        }catch (Exception e){
+            logger.error("Exception while deleting product", e);
+            throw e;
+        }
     }
 }
