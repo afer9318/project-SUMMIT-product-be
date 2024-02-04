@@ -3,6 +3,7 @@ package com.B2B.SP.product.controller;
 import com.B2B.SP.product.model.Product;
 import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.service.ProductService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,14 +24,10 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ProductDto getProduct(@PathVariable Long productId){
-        return productService.findById(productId);
+    public ResponseEntity<ProductDto> getProduct(@PathVariable Long productId){
+        ProductDto productDto = productService.findById(productId);
+        return ResponseEntity.ok(productDto);
     }
-
-//    @PostMapping("/")
-//    public Product saveProduct(@RequestBody Product product){
-//        return productService.save(product);
-//    }
 
     @PostMapping("/")
     public ProductDto saveProduct(@RequestBody ProductDto productDto){
