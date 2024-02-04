@@ -31,7 +31,7 @@ public class ProductRestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
+    @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<ProductErrorResponse> handleBadRequestException(Exception exception){
 
         // create a ProductErrorResponse
@@ -48,5 +48,25 @@ public class ProductRestExceptionHandler {
 
         // return responseEntity
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    // Generic Exception
+    @ExceptionHandler
+    public ResponseEntity<ProductErrorResponse> handleProductServiceException(Exception exception){
+
+        // create a ProductErrorResponse
+        ProductErrorResponse error = new ProductErrorResponse();
+
+        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.setMessage(exception.getMessage());
+        error.setTimestamp(System.currentTimeMillis());
+
+        logger.error("BadRequestException. Status: {}. Message: {}. Timestamp: {}",
+                error.getStatus(),
+                error.getMessage(),
+                error.getTimestamp());
+
+        // return responseEntity
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

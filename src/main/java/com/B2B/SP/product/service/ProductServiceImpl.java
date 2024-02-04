@@ -1,12 +1,12 @@
 package com.B2B.SP.product.service;
 
 import com.B2B.SP.product.dto.ProductDto;
+import com.B2B.SP.product.exception.BadRequestException;
 import com.B2B.SP.product.exception.ProductNotFoundException;
 import com.B2B.SP.product.mapper.ProductMapper;
 import com.B2B.SP.product.repository.ProductRepository;
 import com.B2B.SP.product.model.Product;
 import jakarta.persistence.EntityManager;
-import org.apache.coyote.BadRequestException;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 import org.slf4j.Logger;
@@ -51,24 +51,34 @@ public class ProductServiceImpl implements ProductService{
     @Override
     @Transactional
     public ProductDto findById(Long productId) {
-        logger.info("Finding product by id: {}", productId);
+      try {
+          logger.info("Finding product by id: {}", productId);
+          Product product = productRepository.findById(productId)
+                  .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
-
-        ProductDto productDto = ProductMapper.INSTANCE.productToDTo(product);
-
-        logger.info("Product info: {}", productDto);
-
-        return productDto;
+          return ProductMapper.INSTANCE.productToDTo(product);
+      }catch (Exception e){
+          logger.error("Exception while finding product by id: {}", productId, e);
+          throw e;
+      }
     }
 
     @Override
     @Transactional
     public ProductDto save(ProductDto productDto) {
-        Product product = ProductMapper.INSTANCE.dtoToProductSave(productDto);
-        Product savedProduct = productRepository.save(product);
-        return ProductMapper.INSTANCE.productToDTo(savedProduct);
+        try {
+            if (productDto.getProductId() != null){
+                throw new BadRequestException("Saving product does not need an ID");
+            }
+            logger.info("Saving product: {}", productDto);
+            Product product = ProductMapper.INSTANCE.dtoToProductSave(productDto);
+            Product savedProduct = productRepository.save(product);
+
+            return ProductMapper.INSTANCE.productToDTo(savedProduct);
+        }catch (Exception e){
+            logger.error("Exception while saving product", e);
+            throw e;
+        }
     }
 
     @Override
