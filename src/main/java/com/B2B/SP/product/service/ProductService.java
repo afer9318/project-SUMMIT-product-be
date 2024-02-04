@@ -2,8 +2,6 @@ package com.B2B.SP.product.service;
 
 import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.model.Product;
-import org.apache.coyote.BadRequestException;
-
 import java.util.List;
 
 public interface ProductService {
