@@ -3,6 +3,7 @@ package com.B2B.SP.product.controller;
 import com.B2B.SP.product.model.Product;
 import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,9 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public List<Product> findAllProducts(){
-        return productService.findAll();
+    public ResponseEntity<List<Product>> findAllProducts(){
+        List<Product> productList = productService.findAll();
+        return ResponseEntity.ok(productList);
     }
 
     @GetMapping("/{productId}")
@@ -30,8 +32,9 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ProductDto saveProduct(@RequestBody ProductDto productDto){
-        return productService.save(productDto);
+    public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto){
+        ProductDto savedProductDto = productService.save(productDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProductDto);
     }
 
     @PutMapping("/")

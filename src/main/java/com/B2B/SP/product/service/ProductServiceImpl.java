@@ -32,24 +32,31 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Product> findAll() {
-        // Enable the Hibernate filter
-        Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("activeProductFilter");
-        filter.setParameter("isProductActive", true);
+        try {
+            logger.info("Finding all products");
 
-        // Retrieve the list of products
-        List<Product> productList = productRepository.findAll();
+            // Enable the Hibernate filter
+            Session session = entityManager.unwrap(Session.class);
+            Filter filter = session.enableFilter("activeProductFilter");
+            filter.setParameter("isProductActive", true);
 
-        // Disable the filter to avoid unwanted filtering in subsequent operations
-        session.disableFilter("activeProductFilter");
+            // Retrieve the list of products
+            List<Product> productList = productRepository.findAll();
 
-        return productList;
+            // Disable the filter to avoid unwanted filtering in subsequent operations
+            session.disableFilter("activeProductFilter");
+
+            return productList;
+        }catch (Exception e){
+            logger.error("Exception while finding all products", e);
+            throw e;
+        }
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public ProductDto findById(Long productId) {
       try {
           logger.info("Finding product by id: {}", productId);
