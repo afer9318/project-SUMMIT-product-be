@@ -1,4 +1,4 @@
-package com.B2B.SP.product.entity;
+package com.B2B.SP.product.model;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -9,14 +9,14 @@ import org.hibernate.annotations.*;
 
 import java.math.BigDecimal;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "product")
 @SQLDelete(sql = "UPDATE product SET is_active = false WHERE product_id=?")
 @FilterDef(name = "activeProductFilter", parameters = @ParamDef(name = "isProductActive", type = Boolean.class))
 @Filter(name = "activeProductFilter", condition = "is_active = :isProductActive")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product {
 
     // fields
@@ -47,7 +47,7 @@ public class Product {
     private String productImage;
 
     @Column(name = "is_available")
-    private Boolean isAvailable;
+    private Boolean isAvailable = Boolean.TRUE;
 
     @Column(name = "is_active")
     private Boolean isActive = Boolean.TRUE;

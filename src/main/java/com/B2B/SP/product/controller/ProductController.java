@@ -1,7 +1,10 @@
 package com.B2B.SP.product.controller;
 
-import com.B2B.SP.product.entity.Product;
+import com.B2B.SP.product.model.Product;
+import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,34 +20,33 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public List<Product> findAllProducts(){
-        return productService.findAll();
+    public ResponseEntity<List<Product>> findAllProducts(){
+        List<Product> productList = productService.findAll();
+        return ResponseEntity.ok(productList);
     }
 
     @GetMapping("/{productId}")
-    public Product getProduct(@PathVariable Long productId){
-        return productService.findById(productId);
+    public ResponseEntity<ProductDto> getProduct(@PathVariable Long productId){
+        ProductDto productDto = productService.findById(productId);
+        return ResponseEntity.ok(productDto);
     }
 
     @PostMapping("/")
-    public Product saveProduct(@RequestBody Product product){
-        return productService.save(product);
+    public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto){
+        ProductDto savedProductDto = productService.save(productDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProductDto);
     }
 
     @PutMapping("/")
-    public Product updateProduct(@RequestBody Product product){
-        return  productService.update(product);
+    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto){
+        ProductDto updatedProductDto = productService.update(productDto);
+        return  ResponseEntity.ok(updatedProductDto);
     }
 
     @DeleteMapping("/{productId}")
-    public void deleteProduct(@PathVariable Long productId){
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId){
         productService.deleteById(productId);
+        return ResponseEntity.ok("Product deleted successfully.");
     }
-
-//    @DeleteMapping("/{productId}")
-//    public Boolean deleteProduct(@PathVariable Long productId){
-//        return productService.softDeleteById(productId);
-//        productService.deleteById(productId);
-//    }
 
 }
