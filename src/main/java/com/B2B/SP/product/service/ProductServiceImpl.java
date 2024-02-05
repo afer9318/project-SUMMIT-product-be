@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -77,9 +78,14 @@ public class ProductServiceImpl implements ProductService{
     @Transactional
     public ProductDto save(ProductDto productDto) {
         try {
-            if (productDto.getProductId() != null){
+            if (Objects.nonNull(productDto.getProductId())) {
                 throw new BadRequestException("Saving product does not need an ID");
             }
+
+            if (!productDto.getIsActive()) {
+                throw new BadRequestException("Product isActive cannot be false");
+            }
+
             logger.info("Saving product: {}", productDto);
             Product product = ProductMapper.INSTANCE.dtoToProductSave(productDto);
             Product savedProduct = productRepository.save(product);

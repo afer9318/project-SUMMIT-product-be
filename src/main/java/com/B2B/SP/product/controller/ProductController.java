@@ -3,8 +3,10 @@ package com.B2B.SP.product.controller;
 import com.B2B.SP.product.model.Product;
 import com.B2B.SP.product.dto.ProductDto;
 import com.B2B.SP.product.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,13 +34,13 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ProductDto> saveProduct(@RequestBody ProductDto productDto){
+    public ResponseEntity<ProductDto> saveProduct(@Validated @RequestBody ProductDto productDto){
         ProductDto savedProductDto = productService.save(productDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProductDto);
     }
 
     @PutMapping("/")
-    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto){
+    public ResponseEntity<ProductDto> updateProduct(@Validated @RequestBody ProductDto productDto){
         ProductDto updatedProductDto = productService.update(productDto);
         return  ResponseEntity.ok(updatedProductDto);
     }

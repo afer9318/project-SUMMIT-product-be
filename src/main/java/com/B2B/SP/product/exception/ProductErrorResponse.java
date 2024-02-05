@@ -1,5 +1,7 @@
 package com.B2B.SP.product.exception;
 
+import java.util.Map;
+
 public class ProductErrorResponse {
 
     private int status;
@@ -7,7 +9,6 @@ public class ProductErrorResponse {
     private long timestamp;
 
     public ProductErrorResponse() {
-
     }
 
     public ProductErrorResponse(int status, String message, long timestamp) {
